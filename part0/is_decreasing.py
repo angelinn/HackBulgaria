@@ -6,6 +6,3 @@ def is_decreasing(seq):
             if seq[j] >= seq[i]:
                 return False
     return True
-
-
-print(is_decreasing([5, 4, 3, 2, 6, 1]))

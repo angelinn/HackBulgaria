@@ -12,5 +12,3 @@ def calculate_coins(num):
                 break
 
     return result
-
-print(calculate_coins(0.53))

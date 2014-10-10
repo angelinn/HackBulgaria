@@ -1,7 +1,5 @@
-# <3
-
 def count_vowels(string):
-    vowels = [ 'a', 'e', 'o', 'u', 'i', 'y', 'A', 'E', 'O', 'U', 'I', 'Y' ]
+    vowels = ['a', 'e', 'o', 'u', 'i', 'y', 'A', 'E', 'O', 'U', 'I', 'Y']
     vowels_count = 0
 
     for each in vowels:

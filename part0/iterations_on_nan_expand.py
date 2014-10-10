@@ -1,5 +1,6 @@
 from nan_expand import nan_expand
 
+
 def iterations_on_nan_expand(string):
     if string.find("Not a NaN") == -1:
         return False
@@ -10,5 +11,3 @@ def iterations_on_nan_expand(string):
             return i
 
         i += 1
-
-print(iterations_on_nan_expand('Show me hte monney'))

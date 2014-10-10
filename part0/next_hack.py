@@ -1,8 +1,10 @@
 from is_int_palindrome import is_int_palindrome
 from count_substrings import count_substrings
 
+
 def dec_to_binary(dec):
         return int(bin(dec)[2:])
+
 
 def next_hack(n):
     i = 0

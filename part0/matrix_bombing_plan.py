@@ -1,6 +1,7 @@
 from sum_matrix import sum_matrix
 import copy
 
+
 def bomb(matrix, i, j, core):
     if i >= len(matrix[0]) or i < 0 or j >= len(matrix) or j < 0:
         return False
@@ -9,6 +10,7 @@ def bomb(matrix, i, j, core):
         matrix[i][j] = 0
     else:
         matrix[i][j] -= core
+
 
 def matrix_bombing_plan(matrix):
     m = len(matrix)
@@ -25,7 +27,7 @@ def matrix_bombing_plan(matrix):
             print(matrix)
 
             bomb(matrix, i + 1, j, matrix[i][j])
-            bomb(matrix, i - 1, j ,matrix[i][j])
+            bomb(matrix, i - 1, j, matrix[i][j])
             bomb(matrix, i, j + 1, matrix[i][j])
             bomb(matrix, i + 1, j + 1, matrix[i][j])
             bomb(matrix, i - 1, j + 1, matrix[i][j])
@@ -33,8 +35,6 @@ def matrix_bombing_plan(matrix):
             bomb(matrix, i + 1, j - 1, matrix[i][j])
             bomb(matrix, i - 1, j - 1, matrix[i][j])
 
-            results[(i, j)] = sum_matrix(matrix) 
+            results[(i, j)] = sum_matrix(matrix)
 
     return results
-
-print(matrix_bombing_plan([[1, 2, 3], [4, 5, 6], [7, 8, 9]]))

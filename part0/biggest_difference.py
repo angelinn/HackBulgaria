@@ -11,5 +11,3 @@ def biggest_difference(arr):
         i += 1
 
     return difference
-
-print(biggest_difference(range(100)))

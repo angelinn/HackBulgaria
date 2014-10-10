@@ -1,5 +1,6 @@
 from count_vowels import count_vowels
 
+
 def count_consonants(string):
     letters = 0
     for char in string:
@@ -7,5 +8,3 @@ def count_consonants(string):
             letters += 1
 
     return letters - count_vowels(string)
-
-print(count_consonants("Github is the second best thing that happend to programmers, after the keyboard!"))
