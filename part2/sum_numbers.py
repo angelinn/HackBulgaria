@@ -11,6 +11,7 @@ def sum_numbers(file_name):
         if each != '':
             total += int(each)
 
+    numbers_file.close()
     return total
 
 

@@ -7,6 +7,7 @@ def main():
     text_file = open(path, 'r')
 
     content = text_file.read()
+    text_file.close()
     print(content)
 
 if __name__ == '__main__':

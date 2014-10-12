@@ -12,6 +12,9 @@ def main():
     first_content = first_file.read()
     second_content = second_file.read()
 
+    first_file.close()
+    second_file.close()
+
     print(first_content + '\n' + second_content)
 
 if __name__ == '__main__':
