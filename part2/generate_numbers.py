@@ -11,8 +11,6 @@ def generate_numbers(n, path):
     for i in range(n):
         content += str(randint(1, 1000)) + ' '
 
-    # content = "Malko tupo sladko kote"
-
     wfile.write(content)
     wfile.close()
 
