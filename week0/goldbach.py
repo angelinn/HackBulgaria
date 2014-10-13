@@ -5,8 +5,8 @@ def goldbach(n):
     result = []
     limit = n
 
-    for i in range(2, limit):
-        for j in range(i + 1, n):
+    for i in range(2, limit // 2):
+        for j in range(i + 1, n // 2):
             if is_prime(j) is True:
                 first = j
                 n -= first
