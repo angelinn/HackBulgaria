@@ -16,7 +16,7 @@ def fibonacci_lists(listA, listB, n):
 
 
 def main():
-    print(fibonacci_lists([], [], 100))
+    print(fibonacci_lists([1, 2], [3, 4], 5))
 
 if __name__ == '__main__':
     main()
