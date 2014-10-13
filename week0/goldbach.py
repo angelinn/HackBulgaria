@@ -13,7 +13,6 @@ def goldbach(n):
             for j in range(n, 0, -1):
                 if is_prime(j) and n - j == 0:
                     result.append((first, j))
-                    i = first
                     break
 
         n = limit
@@ -25,7 +24,7 @@ def goldbach(n):
 
 
 def main():
-    print(goldbach(4))
+    print(goldbach(100))
 
 if __name__ == '__main__':
     main()
