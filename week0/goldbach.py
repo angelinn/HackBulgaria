@@ -10,19 +10,15 @@ def goldbach(n):
         for j in range(i + 1, n):
             print(j)
             if is_prime(j) is True:
-                print("IN")
+                print("IN FIRST IF")
                 first = j
                 n -= first
                 print(first)
                 print(n)
-                print("___")
-                print(n)
                 for j in range(n, 0, -1):
-                    print("^^^")
-                    print(j)
-                    print(n)
+                    print(str(j) + " is")
                     if is_prime(j) and n - j == 0:
-                        print("IN SECOND")
+                        print("IN SECOND IF")
                         result.append((first, j))
                         break
 
