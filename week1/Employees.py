@@ -1,21 +1,21 @@
 class Employee:
-    def __init__(self, name, salary):
+    def __init__(self, name, cash):
         self.name = name
-        self.salary = salary
+        self.cash = cash
 
     def weeklyPay(self, hours):
         return "uuuh ! Money!"
 
 
 class HourlyEmployee(Employee):
-    def __init__(self, name, salary):
-        super().__init__(name, salary)
+    def __init__(self, name, wage):
+        super().__init__(name, wage)
 
     def weeklyPay(self, hours):
         if hours > 40:
-            return (self.salary * hours) * 1.5
+            return (self.wage * hours) * 1.5
 
-        return self.salary * hours
+        return self.wage * hours
 
 
 class SalariedEmployee(Employee):
