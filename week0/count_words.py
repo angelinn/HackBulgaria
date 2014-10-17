@@ -9,5 +9,3 @@ def count_words(arr):
             result[word] = 1
 
     return result
-
-print(count_words(["python", "python", "python", "ruby"]))
