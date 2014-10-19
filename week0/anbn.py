@@ -19,5 +19,3 @@ def is_an_bn(word):
     if letter_counter != 0:
         return False
     return True
-
-print(is_an_bn("bbbaaa"))
