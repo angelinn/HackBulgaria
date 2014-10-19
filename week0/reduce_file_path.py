@@ -25,7 +25,6 @@ def get_max_slashes(path):
     max_candidate = 0
 
     for each in path:
-        print("Cand {0}, slash {1} ".format(max_candidate, max_slashes))
         if each == '':
             max_candidate += 1
         elif each != '':
@@ -45,7 +44,6 @@ def reduce_file_path(path):
 
     take_out_dots(splitted)
     max_slashes = get_max_slashes(splitted)
-    print(splitted)
 
     result = path_to_string(splitted)
     print(max_slashes)
@@ -54,5 +52,3 @@ def reduce_file_path(path):
         max_slashes -= 1
 
     return result
-
-print(reduce_file_path("//////////////"))
