@@ -1,5 +1,6 @@
 import unittest
 from entity import Entity
+from weapon import Weapon
 
 
 class TestHero(unittest.TestCase):
@@ -39,6 +40,18 @@ class TestHero(unittest.TestCase):
     def test_get_healing_successful(self):
         self.entity.health = 20
         self.assertTrue(self.entity.get_healing(80))
+
+    def test_has_weapon(self):
+        self.assertFalse(self.entity.has_weapon())
+
+    def test_has_weapon_with_equipped(self):
+        axe = Weapon("Axe", 20, 0.4)
+        weaponed_entity = Entity("Pro", 100)
+        weaponed_entity.equip_weapon(axe)
+        self.assertTrue(weaponed_entity.has_weapon())
+
+    def test_damage_with_weapon(self):
+        self.assertEqual(self.entity.weapon.damage, self.entity.attack())
 
 if __name__ == '__main__':
     unittest.main()

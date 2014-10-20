@@ -1,8 +1,14 @@
+from weapon import Weapon
+
+
 class Entity():
+    _NO_WEAPON = Weapon("None", 0, 0)
+
     def __init__(self, name, health):
         self.name = name
         self.health = health
         self._MAX_HEALTH = 100
+        self.weapon = self._NO_WEAPON
 
     def get_health(self):
         return self.health
@@ -26,3 +32,12 @@ class Entity():
             self.health += healing_points
 
         return True
+
+    def has_weapon(self):
+        return self.weapon.type != 'None'
+
+    def equip_weapon(self, weapon):
+        self.weapon = weapon
+
+    def attack(self):
+        return self.weapon.damage

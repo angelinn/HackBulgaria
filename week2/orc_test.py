@@ -1,5 +1,6 @@
 import unittest
 from orc import Orc
+from weapon import Weapon
 
 
 class TestOrc(unittest.TestCase):
@@ -21,6 +22,11 @@ class TestOrc(unittest.TestCase):
 
         less_berserking_orc = Orc("Not Gromash", 100, -20)
         self.assertEqual(1, less_berserking_orc.berserk_factor)
+
+    def test_attack_with_berserk_factor(self):
+        self.thrall.equip_weapon(Weapon("Pickaxe", 38, 0.6))
+        self.assertEqual(self.thrall.weapon.damage * self.thrall.berserk_factor,
+                         self.thrall.attack())
 
 if __name__ == '__main__':
     unittest.main()
