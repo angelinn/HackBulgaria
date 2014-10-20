@@ -2,6 +2,9 @@ from is_prime import is_prime
 
 
 def goldbach(n):
+    if n == 0:
+        raise ZeroDivisionError
+
     result = []
     limit = n
 
@@ -21,10 +24,3 @@ def goldbach(n):
         return False
 
     return result
-
-
-def main():
-    print(goldbach(100))
-
-if __name__ == '__main__':
-    main()
