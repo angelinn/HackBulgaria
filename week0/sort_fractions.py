@@ -1,4 +1,7 @@
 def fraction_to_float(fraction):
+    if fraction[1] == 0:
+        raise ZeroDivisionError
+
     return fraction[0] / fraction[1]
 
 
