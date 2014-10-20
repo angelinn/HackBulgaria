@@ -12,3 +12,10 @@ def member_of_nth_fibonacci_lists(listA, listB, needle):
             return False
 
         i += 1
+
+
+def main():
+    print(member_of_nth_fibonacci_lists([1, 2], [3, 4], [1, 2, 3, 4, 3, 4, 1, 2, 3, 4]))
+
+if __name__ == '__main__':
+    main()
