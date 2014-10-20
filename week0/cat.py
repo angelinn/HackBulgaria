@@ -2,11 +2,12 @@
 import sys
 
 
-def cat(filename):
-    content = filename.read()
-    print(content)
+def read_single_content(filename):
+    return filename.read()
 
-    return content
+
+def cat(filename):
+    print(read_single_content(filename))
 
 
 def main():
