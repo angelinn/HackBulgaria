@@ -1,26 +1,23 @@
 import sys
 
 
-def concat_files(path_one, path_two):
+def concat_files(file_one, file_two):
     destination = "MEGATRON"
 
-    file_one = open(path_one, 'r')
-    file_two = open(path_two, 'r')
-
-    content_one = file_one.read()
-    content_two = file_two.read()
-
-    file_one.close()
-    file_two.close()
-
     megatron = open(destination, 'w')
-    megatron.write(content_one + '\n' + content_two)
+    megatron.write(file_one.read() + '\n' + file_two.read())
 
     megatron.close()
 
 
 def main():
-    concat_files(sys.argv[1], sys.argv[2])
+    file_one = open(sys.argv[1], 'r')
+    file_two = open(sys.argv[2], 'r')
+
+    concat_files(file_one, file_two)
+
+    file_one.close()
+    file_two.close()
 
 if __name__ == '__main__':
     main()
