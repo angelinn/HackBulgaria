@@ -139,5 +139,3 @@ class Pizza:
                 print("Something isn't right ..")
 
         return True
-
-Pizza().order()

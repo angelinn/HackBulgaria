@@ -6,45 +6,43 @@ from pizza import *
 
 class TestPizza(unittest.TestCase):
     def setUp(self):
-        self.save_file = open('pizza_test.txt', 'w')
-        self.files = []
-        self.orders = {}
+        self.pizza = Pizza()
+        self.nab_file = open(self.pizza.file_names, 'r+')
 
     def tearDown(self):
-        self.save_file.close()
-        os.remove('pizza_test.txt')
+        self.nab_file.truncate()
+        self.nab_file.close()
 
     def test_take_order_valid(self):
-        self.assertTrue(take(['', 'John', 20], self.orders))
-        self.assertTrue(take(['', 'Vankata', 180.93], self.orders))
+        self.assertTrue(self.pizza.take(['', 'John', 20]))
+        self.assertTrue(self.pizza.take(['', 'Vankata', 180.93]))
 
     def test_take_order_invalid(self):
-        self.assertFalse(take(['', '', ''], self.orders))
+        with self.assertRaises(ValueError):
+            self.pizza.take(['', '', ''])
 
     def test_saving_and_loading(self):
-        take(['', 'John', 20], self.orders)
-        take(['', 'Vankata', 180.93], self.orders)
+        self.pizza.take(['', 'John', 20])
+        self.pizza.take(['', 'Vankata', 180.93])
 
-        old_orders = deepcopy(self.orders)
-        save(self.orders, 'file_names_test.txt')
+        old_orders = deepcopy(self.pizza.orders)
+        self.pizza.save()
 
-        take(['', 'Peter', 200], self.orders)
-        take(['', 'Vankata', 0.18], self.orders)
+        self.pizza.take(['', 'Peter', 200])
+        self.pizza.take(['', 'Vankata', 0.18])
 
-        self.assertNotEqual(old_orders, self.orders)
-        self.files = list('file_names_test.txt')
-        self.orders = load(self.files, 0)
-        self.assertEqual(old_orders, self.orders)
+        self.assertNotEqual(old_orders, self.pizza.orders)
+        self.pizza.files = self.pizza.list()
+        self.pizza.orders = self.pizza.load(0)
+        self.pizza.orders = self.pizza.load(0)
+        self.assertEqual(old_orders, self.pizza.orders)
 
-        print("SELF FILES - {0}".format(self.files))
-        for each in self.files:
+        for each in self.nab_file.read().split('\n'):
             if each != '':
                 os.remove(each)
 
-        os.remove('file_names_test.txt')
-
     def test_load_before_using_list(self):
-        self.assertFalse(load(self.files, 10))
+        self.assertFalse(self.pizza.load(10))
 
 
 if __name__ == '__main__':
