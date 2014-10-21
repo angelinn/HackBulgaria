@@ -8,8 +8,13 @@ class TestPizza(unittest.TestCase):
     def setUp(self):
         self.pizza = Pizza()
         self.nab_file = open(self.pizza.file_names, 'r+')
+        self.nab_file.truncate()
 
     def tearDown(self):
+        for each in self.nab_file.read().split('\n'):
+            if each != '':
+                os.remove(each)
+
         self.nab_file.truncate()
         self.nab_file.close()
 
@@ -36,10 +41,6 @@ class TestPizza(unittest.TestCase):
         self.pizza.orders = self.pizza.load(0)
         self.pizza.orders = self.pizza.load(0)
         self.assertEqual(old_orders, self.pizza.orders)
-
-        for each in self.nab_file.read().split('\n'):
-            if each != '':
-                os.remove(each)
 
     def test_load_before_using_list(self):
         self.assertFalse(self.pizza.load(10))
