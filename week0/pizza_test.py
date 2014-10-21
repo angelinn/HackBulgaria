@@ -43,6 +43,9 @@ class TestPizza(unittest.TestCase):
 
         os.remove('file_names_test.txt')
 
+    def test_load_before_using_list(self):
+        self.assertFalse(load(self.files, 10))
+
 
 if __name__ == '__main__':
     unittest.main()
