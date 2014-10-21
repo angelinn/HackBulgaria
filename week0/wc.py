@@ -1,12 +1,10 @@
 import sys
 
 
-def wc(path, filter_word):
+def wc(file_to_count, filter_word):
     total = 0
 
-    file_to_count = open(path, 'r')
     content = file_to_count.read()
-    file_to_count.close()
 
     if filter_word == 'chars':
         total = len(content)
@@ -28,7 +26,9 @@ def wc(path, filter_word):
 
 
 def main():
-    print(wc(sys.argv[1], sys.argv[2]))
+    file_to_filter = open(sys.argv[1], 'r')
+    print(wc(file_to_filter, sys.argv[2]))
+    file_to_filter.close()
 
 if __name__ == '__main__':
     main()
