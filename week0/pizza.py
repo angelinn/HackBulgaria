@@ -83,6 +83,20 @@ class Pizza:
 
         return new_orders
 
+    def help(self):
+            print("""
+                Available commands:
+
+                take <name> <price> - starts an order
+                status - displays orders
+                save - saves orders
+                help - displays this pro text
+                list - displays saved orders
+                load <number> - loads number from 'list'
+                clear - clear the 'list'
+                finish - exits the pro program
+                """)
+
     def order(self):
         while True:
             try:
@@ -106,6 +120,9 @@ class Pizza:
                     trunc = open(self.file_names, 'w')
                     trunc.close()
 
+                elif command == 'help':
+                    self.help()
+
                 elif command == 'finish':
                     if self.display_warning is True:
                         print("You have not saved. Type finish again to continue")
@@ -122,3 +139,5 @@ class Pizza:
                 print("Something isn't right ..")
 
         return True
+
+Pizza().order()
