@@ -16,8 +16,7 @@ class Pizza:
         price = details[2]
 
         if name == '' or price == '':
-            print("Invalid value entered.")
-            return False
+            raise ValueError
 
         if name in self.orders:
             self.orders[name] += price
@@ -32,6 +31,9 @@ class Pizza:
             print('{0}: {1}'.format(each, self.orders[each]))
 
     def save(self):
+        if self.orders == {}:
+            print("Orders are empty. Please order something first!")
+
         ts = time()
         stamp = 'orders_' + datetime.fromtimestamp(ts).strftime('%Y_%m_%d_%H_%M_%S')
         save_file = open(stamp, 'w')
@@ -109,14 +111,14 @@ class Pizza:
                         print("You have not saved. Type finish again to continue")
                         self.display_warning = False
                     else:
+                        print("Bye Bye!")
                         break
-
                 else:
                     print("Unknown command!")
 
+            except ValueError:
+                print("Invalid value.")
             except BaseException:
                 print("Something isn't right ..")
 
         return True
-
-Pizza().order()
