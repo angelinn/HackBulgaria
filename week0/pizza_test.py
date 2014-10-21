@@ -45,6 +45,11 @@ class TestPizza(unittest.TestCase):
     def test_load_before_using_list(self):
         self.assertFalse(self.pizza.load(10))
 
+    def test_load_with_using_list_with_unsaved_order(self):
+        self.pizza.take(['', 'John', 20])
+        self.pizza.list()
+        self.assertFalse(self.pizza.load(2))
+
 
 if __name__ == '__main__':
     unittest.main()
