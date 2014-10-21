@@ -16,9 +16,9 @@ class TestSudokuSolved(unittest.TestCase):
                               [2, 4, 3, 6, 1, 5, 9, 8, 7]]
 
         self.sudoku_incorrect = [
-                                [1, 2, 3, 4, 5, 6, 7, 8, 9],
-                                [1, 2, 3, 4, 5, 6, 7, 8, 9],
-                                [1, 2, 3, 4, 5, 6, 7, 8, 9],
+                                [4, 5, 2, 4, 5, 6, 7, 8, 9],
+                                [3, 8, 7, 4, 5, 6, 7, 8, 9],
+                                [6, 1, 9, 4, 5, 6, 7, 8, 9],
                                 [1, 2, 3, 4, 5, 6, 7, 8, 9],
                                 [1, 2, 3, 4, 5, 6, 7, 8, 9],
                                 [1, 2, 3, 4, 5, 6, 7, 8, 9],
@@ -49,6 +49,12 @@ class TestSudokuSolved(unittest.TestCase):
                 return
 
         self.assertFalse(True)
+
+    def test_little_square_true(self):
+        self.assertTrue(check_little_square(self.sudoku_correct, 3, 0))
+
+    def test_little_square_false(self):
+        self.assertFalse(check_little_square(self.sudoku_incorrect, 3, 3))
 
     def test_true(self):
         self.assertTrue(sudoku_solved(self.sudoku_correct))

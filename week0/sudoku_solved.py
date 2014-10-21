@@ -39,13 +39,26 @@ def check_line(line):
     return is_target_valid(target_copy)
 
 
-def sudoku_solved(sudoku):
-    for i, line in enumerate(sudoku):
-        if check_line(line) is False or check_column(sudoku, i) is False:
-            #print("This line didn't pass the test: " + str(line))
-            return False
-        # else:
-        #     print("This line has passed test : " + str(line))
+def check_little_square(sudoku, row, col):
+    target_copy = deepcopy(target)
 
-    return True
+    for i in range(row, row + 3):
+        for j in range(col, col + 3):
+            check_number(sudoku[i][j], target_copy)
+
+    return is_target_valid(target_copy)
+
+
+def sudoku_solved(sudoku):
+    for j, line in enumerate(sudoku):
+        if check_line(line) is False or check_column(sudoku, j) is False:
+            return False
+
+# 00 03 06 / 10 13 16/ 20 23 26
+    for i in range(0, 9, 3):
+        for j in range(0, 9, 3):
+            if check_little_square(sudoku, i, j) is False:
+                return False
+
     print("Motherfucking Sudoku !!")
+    return True
