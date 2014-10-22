@@ -40,4 +40,8 @@ class Entity():
         self.weapon = weapon
 
     def attack(self):
-        return self.weapon.damage
+        if self.weapon.critical_hit() is True:
+            print("CRITICAL!")
+            return self.weapon.damage * 2
+        else:
+            return self.weapon.damage

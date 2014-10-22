@@ -15,4 +15,8 @@ class Orc(Entity):
             self.berserk_factor = berserk_factor
 
     def attack(self):
-        return self.weapon.damage * self.berserk_factor
+        if self.weapon.critical_hit() is True:
+            print("CRITICAL!")
+            return self.weapon.damage * self.berserk_factor * 2
+        else:
+            return self.weapon.damage * self.berserk_factor
