@@ -53,8 +53,6 @@ match teams <course_id>, <team_size>, <group_time>''')
         self.read_courses()
 
         system('clear')
-        while True:
-            print("KUR")
 
         while True:
             command = input('> ')
