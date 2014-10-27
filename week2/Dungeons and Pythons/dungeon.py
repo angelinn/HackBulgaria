@@ -13,7 +13,6 @@ class Dungeon:
         content = map_file.read().split('\n')
 
         for each in content:
-            print("ADDING {0}".format(each))
             self.map_list.append(list(each))
 
         map_file.close()
@@ -35,16 +34,17 @@ class Dungeon:
                     #print(isinstance(self.players[player_name].entity, Hero))
                     #print(isinstance(self.players[player_name].entity, Orc))
                     if isinstance(self.players[player_name].entity, Hero):
+                        print(entity.name)
                         self.map_list[i][j] = 'H'
                         self.players[player_name].set_position(i, j)
-                        break
+                        return True
 
                     elif isinstance(self.players[player_name].entity, Orc):
                         self.map_list[i][j] = 'O'
                         self.players[player_name].set_position(i, j)
-                        break
+                        return True
 
                     else:
                         raise TypeError
 
-        return True
+        return None
