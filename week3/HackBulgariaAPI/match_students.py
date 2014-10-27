@@ -1,8 +1,12 @@
 import requests
 import random
+from os import system
 
 
 class TeamMatcher:
+
+    _SEPARATOR = '==============='
+
     def __init__(self):
         self.data = []
         self.courses = []
@@ -14,7 +18,6 @@ class TeamMatcher:
             raise ValueError
 
         self.data = reqs.json()
-        #pprint.pprint(self.data)
 
     def read_courses(self):
         for person in self.data:
@@ -22,27 +25,53 @@ class TeamMatcher:
                 if course['name'] not in self.courses:
                     self.courses.append(course['name'])
 
+        self.courses = sorted(self.courses)
+
     def list_courses(self):
         for i, course in enumerate(self.courses):
             print('[{0}] {1}'.format(i, course))
 
     def match_teams(self, course_id, team_size, group_time):
-        random.shuffle(self.courses)
+        random.shuffle(self.data)
+        team_counter = 0
 
         for person in self.data:
-            for i in range(team_size):
-                for course in person['courses']:
-                    if course['name'] == self.courses[course_id] and course['group'] == group_time:
-                        print(person['name'])
-        print('=============')
+            for course in person['courses']:
+                if course['name'] == self.courses[course_id] and course['group'] == group_time:
+                    print(person['name'])
+                    team_counter += 1
+                    if team_counter % team_size == 0:
+                        print(self._SEPARATOR)
+
+    def print_help(self):
+        print('''list courses - this lists all the courses that are available now.
+match teams <course_id>, <team_size>, <group_time>''')
+
+    def go(self):
+        print('loading data ..')
+        self.read_data()
+        self.read_courses()
+
+        system('clear')
+
+        while True:
+            command = input('> ')
+
+            if command == 'help':
+                self.print_help()
+            elif command.find('match teams') != -1:
+                res = command.split(' ')
+                self.match_teams(int(res[2]), int(res[3]), int(res[4]))
+            elif command == 'list courses':
+                self.list_courses()
+            elif command == 'exit':
+                break
+            else:
+                print('Invalid command')
 
 
+def main():
+    TeamMatcher().go()
 
-
-
-
-t = TeamMatcher()
-t.read_data()
-t.read_courses()
-t.list_courses()
-t.match_teams(4, 2, 2)
+if __name__ == '__main__':
+    main()
