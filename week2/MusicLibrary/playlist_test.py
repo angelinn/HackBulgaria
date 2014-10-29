@@ -1,4 +1,5 @@
 import unittest
+import os
 from playlist import Playlist
 from song import Song
 
@@ -8,6 +9,9 @@ class TestPlaylist(unittest.TestCase):
     def setUp(self):
         self.playlist = Playlist('Pro Playlist')
         self.song = Song("BeatBox", "PsychoFrog", "BB 2015", 4, 190, 320)
+
+    def tearDown(self):
+        os.remove('test_playlist.txt')
 
     def test_add_song(self):
         self.playlist.add_song(self.song)
@@ -50,10 +54,8 @@ class TestPlaylist(unittest.TestCase):
         self.playlist.add_song(Song("Other Song", "Other Artist", "Album", 5, 180, 320))
 
         self.assertEqual(["PsychoFrog", "Other Artist"], self.playlist.show_artists())
-        #print(self.playlist)
-        self.playlist.save('test_playlist.txt')
 
-    #def test_saving(self):
+    def test_saving(self):
         self.playlist.save('test_playlist.txt')
 
 

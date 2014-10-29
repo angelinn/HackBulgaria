@@ -1,4 +1,5 @@
 import datetime
+import math
 
 
 class Song:
@@ -11,7 +12,11 @@ class Song:
         self.album = album
         self.rating = rating
         self.length = length
-        self.bitrate = bitrate
+
+        bitrate_length = math.log10(bitrate) + 1
+
+        if bitrate_length > 3:
+            self.bitrate = int(bitrate / 1000)
 
     def rate(self, rating):
         if rating < self.MIN_RATING or rating > self.MAX_RATING:

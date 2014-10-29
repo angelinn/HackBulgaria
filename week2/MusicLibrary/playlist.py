@@ -1,4 +1,5 @@
 import json
+from song import Song
 
 
 class Playlist:
@@ -56,10 +57,23 @@ class Playlist:
 
         return result
 
+    def to_JSON(self):
+        return json.dumps(self, default=lambda o: o.__dict__, sort_keys=True, indent=4)
+
     def save(self, file_name):
         burnable = open(file_name, 'w')
-        for each in self.songs:
-            burnable.write(json.dumps(each.__dict__))
+        burnable.write(self.to_JSON())
 
         burnable.close()
 
+    @staticmethod
+    def load(file_name):
+        readable = open(file_name, 'r')
+        data = json.load(readable)
+
+        result = Playlist(data['name'])
+        for song in data['songs']:
+            result.add_song(Song(song['title'], song['artist'], song['album'],
+                                 song['rating'], song['length'], song['bitrate']))
+
+        return result

@@ -18,7 +18,7 @@ class MusicCrawler:
     def get_tag(self, mpeg3, tag):
         try:
             result = mpeg3[tag][0]
-        except BaseException:
+        except Exception:
             return 'Unknown'
 
         return result
