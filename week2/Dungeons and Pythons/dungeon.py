@@ -30,11 +30,7 @@ class Dungeon:
         for i in range(len(self.map_list)):
             for j in range(len(self.map_list[0])):
                 if self.map_list[i][j] == 'S':
-
-                    #print(isinstance(self.players[player_name].entity, Hero))
-                    #print(isinstance(self.players[player_name].entity, Orc))
                     if isinstance(self.players[player_name].entity, Hero):
-                        print(entity.name)
                         self.map_list[i][j] = 'H'
                         self.players[player_name].set_position(i, j)
                         return True

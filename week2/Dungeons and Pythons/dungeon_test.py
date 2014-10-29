@@ -30,7 +30,6 @@ class TestDungeon(unittest.TestCase):
 
     def test_spawn_with_two_entities(self):
         self.assertTrue(self.cool_dungeon.spawn('Player Tres', Hero('John', 100, 'Kingslayer')))
-        print('Adding Pete')
         self.assertTrue(self.cool_dungeon.spawn('Player Dos', Orc('Pete', 100, 3)))
         print('\n')
         self.cool_dungeon.print_map()

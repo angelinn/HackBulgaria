@@ -29,7 +29,12 @@ class MusicCrawler:
 
         for each in self.files:
             audio = MP3('{0}/{1}'.format(self.directory, each), ID3=EasyID3)
-            result.add_song(Song(audio['title'][0], audio['artist'][0], audio['album'][0],
+
+            title = self.get_tag(audio, 'title')
+            artist = self.get_tag(audio, 'artist')
+            album = self.get_tag(audio, 'album')
+
+            result.add_song(Song(title, artist, album,
                                  self._NULL_RATING,
                                  str(datetime.timedelta(seconds=audio.info.length)),
                                  audio.info.bitrate))
