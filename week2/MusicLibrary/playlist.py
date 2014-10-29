@@ -3,7 +3,7 @@ from song import Song
 
 
 class Playlist:
-    _MAX_BITRATE = 320
+    MAX_BITRATE = 320
 
     def __init__(self, name):
         self.name = name
@@ -20,6 +20,10 @@ class Playlist:
                 i -= 1
 
             i += 1
+
+    def list_songs(self):
+        for i, song in enumerate(self.songs):
+            print('[{0}] {1} - {2}'.format(i, song.artist, song.title))
 
     def total_length(self):
         total = 0
@@ -38,7 +42,7 @@ class Playlist:
 
     def remove_bad_quality(self):
         for each in self.songs:
-            if each.bitrate < self._MAX_BITRATE:
+            if each.bitrate < self.MAX_BITRATE:
                 self.remove_song(each.title)
 
     def show_artists(self):
