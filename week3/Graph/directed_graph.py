@@ -37,3 +37,11 @@ class DirectedGraph:
 
             if self.path_between(self.nodes[node_a.name].points_to[i], node_b) is True:
                 return True
+
+    def __str__(self):
+        result = ''
+
+        for each in self.nodes:
+            result += '{0}: {1}\n'.format(each, self.nodes[each].name)
+
+        return result
