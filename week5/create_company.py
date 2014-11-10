@@ -41,14 +41,51 @@ class CompanyControl:
         self.database.commit()
 
     def add_employee(self):
-        name = input("Name > ")
-        salary = input("Monthly Salary > ")
-        bonus = input("Yearly bonus > ")
-        position = input("Position > ")
+        data = self.input_fields()
+
+        name = data[0]
+        salary = data[1]
+        bonus = data[2]
+        position = data[3]
 
         self.cursor.execute('''INSERT INTO employees(name, monthly_salary, yearly_bonus, position)
             VALUES(?, ?, ?, ?)''', (name, salary, bonus, position))
         self.database.commit()
+
+    def delete_employee(self, id):
+        self.cursor.execute('DELETE FROM employees WHERE id = ?', (id,))
+        self.database.commit()
+
+    def update_employee(self, id):
+        data = self.input_fields()
+
+        name = data[0]
+        salary = data[1]
+        bonus = data[2]
+        position = data[3]
+
+        self.cursor.execute('''UPDATE employees SET name = ?, monthly_salary = ?, yearly_bonus = ?,
+         position = ? WHERE id = ?''',
+                            (name, salary, bonus, position, id))
+
+        self.database.commit()
+
+    def input_fields(self):
+        data = []
+
+        data.append(input("Name > "))
+        data.append(input("Monthly Salary > "))
+        data.append(input("Yearly bonus > "))
+        data.append(input("Position > "))
+
+        return data
+
+    def list_employees(self):
+        result = self.cursor.execute('SELECT * FROM employees')
+        a = result.fetchall()
+
+        for row in a:
+            print('[{}] {} - {}'.format(row[0], row[1], row[4]))
 
     def go(self):
         while True:
@@ -56,17 +93,20 @@ class CompanyControl:
 
             if command == 'add_employee':
                 self.add_employee()
+            elif command.split()[0] == 'delete_employee':
+                self.delete_employee(command.split()[1])
+            elif command.split()[0] == 'update_employee':
+                self.update_employee(command.split()[1])
+            elif command == 'list_employees':
+                self.list_employees()
             elif command == 'exit':
                 break
 
-        result = self.cursor.execute('SELECT * FROM employees')
-        a = result.fetchall()
-        print(a)
         self.database.close()
 
 
 def main():
-    CompanyControl().fill_database()
+    CompanyControl().go()
 
 if __name__ == '__main__':
     main()
