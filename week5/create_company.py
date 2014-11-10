@@ -70,6 +70,14 @@ class CompanyControl:
 
         self.database.commit()
 
+    def monthly_spending(self):
+        total_monthly = self.cursor.execute('SELECT SUM(monthly_salary) FROM employees').fetchone()
+        return 'The company is spending {} per month.'.format(total_monthly[0])
+
+    def yearly_spending(self):
+        total_yearly = self.cursor.execute('SELECT SUM(yearly_bonus) FROM employees').fetchone()
+        return 'The company is spending {} per year.'.format(total_yearly[0])
+
     def input_fields(self):
         data = []
 
@@ -99,6 +107,10 @@ class CompanyControl:
                 self.update_employee(command.split()[1])
             elif command == 'list_employees':
                 self.list_employees()
+            elif command == 'monthly_spending':
+                print(self.monthly_spending())
+            elif command == 'yearly_spending':
+                print(self.yearly_spending())
             elif command == 'exit':
                 break
 
