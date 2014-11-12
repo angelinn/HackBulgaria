@@ -65,8 +65,7 @@ class CompanyControl:
         position = data[3]
 
         self.cursor.execute('''UPDATE employees SET name = ?, monthly_salary = ?, yearly_bonus = ?,
-         position = ? WHERE id = ?''',
-                            (name, salary, bonus, position, id))
+         position = ? WHERE id = ?''', (name, salary, bonus, position, id))
 
         self.database.commit()
 
@@ -75,8 +74,9 @@ class CompanyControl:
         return 'The company is spending {} per month.'.format(total_monthly[0])
 
     def yearly_spending(self):
-        total_yearly = self.cursor.execute('SELECT SUM(yearly_bonus) FROM employees').fetchone()
-        return 'The company is spending {} per year.'.format(total_yearly[0])
+        total_monthly = self.cursor.execute('SELECT SUM(monthly_salary) FROM employees').fetchone()[0] * 12
+        total_bonus = self.cursor.execute('SELECT SUM(yearly_bonus) FROM employees').fetchone()[0]
+        return 'The company is spending {} per year.'.format(total_monthly + total_bonus)
 
     def input_fields(self):
         data = []
@@ -101,16 +101,22 @@ class CompanyControl:
 
             if command == 'add_employee':
                 self.add_employee()
+
             elif command.split()[0] == 'delete_employee':
                 self.delete_employee(command.split()[1])
+
             elif command.split()[0] == 'update_employee':
                 self.update_employee(command.split()[1])
+
             elif command == 'list_employees':
                 self.list_employees()
+
             elif command == 'monthly_spending':
                 print(self.monthly_spending())
+
             elif command == 'yearly_spending':
                 print(self.yearly_spending())
+
             elif command == 'exit':
                 break
 
