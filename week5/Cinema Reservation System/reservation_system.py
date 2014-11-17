@@ -1,9 +1,13 @@
 import sqlite3
 from copy import deepcopy
+from seat import Seat
 
 
 class ReservationSystem:
     MAX_SEATS = 100
+    LENGTH = 10
+    WIDTH = 10
+    __TOP_CINEMA_SEATS = '   1 2 3 4 5 6 7 8 9 10'
 
     def __init__(self):
         self.database = None
@@ -87,34 +91,80 @@ class ReservationSystem:
 
     def make_reservation(self):
         name = input('Input name > ')
-        tickets = input('Number of tickets > ')
+        tickets = int(input('Number of tickets > '))
 
         print('Current Movies: ')
         self.show_movies()
 
         choice = input('Choose a movie > ')
         movie_name = self.cursor.execute('SELECT name FROM Movies WHERE ? = id', (choice,)).fetchone()[0]
+        self.list_projections(movie_name, choice)
 
+        projection_choice = input('Choose projection > ')
+        hall_map = self.list_available_seat_map(projection_choice)
+
+        self.choose_seats(hall_map, tickets)
+
+    def choose_seats(self, hall_map, tickets_count):
+        result = []
+
+        while tickets_count > 0:
+            seat_choice_string = tuple(input("Choose a seat > "))
+            seat_choice = Seat.string_to_seat_tuple(seat_choice_string)
+
+            if Seat.isOutOfRange(seat_choice[0], seat_choice[1], self.LENGTH, self.WIDTH) is True:
+                print("Seat is out of boundries")
+
+            elif hall_map[seat_choice[0] - 1][seat_choice[1] - 1] == Seat.SEAT_TAKEN:
+                print("Seat is already taken")
+            else:
+                result.append(seat_choice)
+                tickets_count -= 1
+
+        return result
+
+    def list_projections(self, movie_name, choice):
         print('Projections for {}: '.format(movie_name))
         projections = self.cursor.execute('SELECT id, date, time, type FROM Projections WHERE movie_id = ?',
                                           (choice, )).fetchall()
 
-        proj_list = []
-
         for proj in projections:
-            proj_list.append('[{}] - {} {} ({})'.format
-                            (proj[0], proj[1], proj[2], proj[3]))
-
             slots = self.cursor.execute('''SELECT Projections.id
-                   FROM Projections
-                   INNER JOIN Reservations
-                   ON Projections.id = Reservations.projection_id
-                   WHERE Projections.id = ?''', (proj[0], ))
+                                           FROM Projections
+                                           INNER JOIN Reservations
+                                           ON Projections.id = Reservations.projection_id
+                                           WHERE Projections.id = ?''', (proj[0], ))
 
             print('[{}] - {} {} ({}) - {}  seats available'.format
                  (proj[0], proj[1], proj[2], proj[3], self.MAX_SEATS - len(list(slots))))
 
+    def list_available_seat_map(self, projection_choice):
+        print('Available seats (marked with a dot):')
 
+        matrix = deepcopy(self.cinema_hall)
+        occupied = self.cursor.execute('''SELECT Reservations.row, Reservations.col
+                                          FROM Reservations
+                                          INNER JOIN Projections
+                                          ON Reservations.projection_id = Projections.id
+                                          WHERE Projections.id = ?''', (projection_choice, ))
+
+        for seat in occupied:
+            matrix[seat[0] - 1][seat[1] - 1] = Seat.SEAT_TAKEN
+
+        row = ''
+
+        print(self.__TOP_CINEMA_SEATS)
+
+        for i in range(10):
+            row += '{:2} '.format(i + 1)
+
+            for j in range(10):
+                row += '{} '.format(matrix[i][j])
+
+            print(row)
+            row = ''
+
+        return matrix
     #def go(self):
 
 
