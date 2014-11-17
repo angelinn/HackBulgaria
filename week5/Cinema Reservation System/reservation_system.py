@@ -97,10 +97,23 @@ class ReservationSystem:
 
         print('Projections for {}: '.format(movie_name))
         projections = self.cursor.execute('SELECT id, date, time, type FROM Projections WHERE movie_id = ?',
-                                          (choice,))
+                                          (choice, )).fetchall()
+
+        proj_list = []
+
         for proj in projections:
-            #slots = self.cursor.execute('SELECT Projections. )
-            print('[{}] - {} {} ({})'.format(proj[0], proj[1], proj[2], proj[3]))
+            proj_list.append('[{}] - {} {} ({})'.format
+                            (proj[0], proj[1], proj[2], proj[3]))
+
+            slots = self.cursor.execute('''SELECT Projections.id
+                   FROM Projections
+                   INNER JOIN Reservations
+                   ON Projections.id = Reservations.projection_id
+                   WHERE Projections.id = ?''', (proj[0], ))
+
+            print('[{}] - {} {} ({}) - {}  seats available'.format
+                 (proj[0], proj[1], proj[2], proj[3], self.MAX_SEATS - len(list(slots))))
+
 
     #def go(self):
 
