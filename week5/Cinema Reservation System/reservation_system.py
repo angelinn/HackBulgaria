@@ -103,13 +103,32 @@ class ReservationSystem:
         projection_choice = input('Choose projection > ')
         hall_map = self.list_available_seat_map(projection_choice)
 
-        self.choose_seats(hall_map, tickets)
+        seats = self.choose_seats(hall_map, tickets)
+
+        date = self.cursor.execute('''SELECT date, time
+                                      FROM Projections
+                                      WHERE id = ?''', (projection_choice, )).fetchone()
+
+        seats_string = ''
+        for seat in seats:
+            seats_string += '{} '.format(str(seat))
+
+        self.summit_reservation(name, movie_name, '{} {}'.format(date[0], date[1]), seats_string)
+
+        finalizer = input('Write "finalize" to confirm > ')
+        if finalizer == 'finalize':
+            for seat in seats:
+                self.add_reservation(name, projection_choice, seat[0], seat[1])
+
+    def summit_reservation(self, name, movie_name, date, seats):
+        print('This is your reservation:\nMovie: {}\nDate: {}\nSeats: {}\n\n'
+              .format(movie_name, date, seats))
 
     def choose_seats(self, hall_map, tickets_count):
         result = []
 
         while tickets_count > 0:
-            seat_choice_string = tuple(input("Choose a seat > "))
+            seat_choice_string = tuple(input("Choose a seat (e.g '(1, 2)') > "))
             seat_choice = Seat.string_to_seat_tuple(seat_choice_string)
 
             if Seat.isOutOfRange(seat_choice[0], seat_choice[1], self.LENGTH, self.WIDTH) is True:
@@ -137,6 +156,8 @@ class ReservationSystem:
 
             print('[{}] - {} {} ({}) - {}  seats available'.format
                  (proj[0], proj[1], proj[2], proj[3], self.MAX_SEATS - len(list(slots))))
+
+        return projections
 
     def list_available_seat_map(self, projection_choice):
         print('Available seats (marked with a dot):')
