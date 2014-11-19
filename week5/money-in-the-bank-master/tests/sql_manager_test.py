@@ -1,5 +1,6 @@
 import sys
 import unittest
+import hashlib
 
 sys.path.append("..")
 
@@ -20,7 +21,8 @@ class SqlManagerTests(unittest.TestCase):
 
         sql_manager.cursor.execute('''SELECT Count(*)
                                       FROM clients
-                                      WHERE username = ? AND password = ?''', ('Dinko', '123121233Aa@'))
+                                      WHERE username = ? AND password = ?''',
+                                  ('Dinko', hashlib.md5('123121233Aa@'.encode()).hexdigest()))
 
         users_count = sql_manager.cursor.fetchone()
 
