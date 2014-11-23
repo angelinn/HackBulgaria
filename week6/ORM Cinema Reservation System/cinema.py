@@ -4,7 +4,7 @@ from projection import Projection
 from connection import Base, engine
 from sqlalchemy.orm import Session
 
-s
+
 class Cinema:
     def __init__(self):
         Base.metadata.create_all(engine)
