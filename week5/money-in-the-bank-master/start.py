@@ -1,4 +1,5 @@
 import sql_manager
+from getpass import getpass
 
 
 def main_menu():
@@ -9,14 +10,16 @@ def main_menu():
 
         if command == 'register':
             username = input("Enter your username: ")
-            password = input("Enter your password: ")
+            password = getpass("Enter your password: ")
 
             if sql_manager.register(username, password):
                 print("Registration Successful")
+            else:
+                print("Something went wrong! Registration not successful!")
 
         elif command == 'login':
             username = input("Enter your username: ")
-            password = input("Enter your password: ")
+            password = getpass("Enter your password: ")
 
             logged_user = sql_manager.login(username, password)
 
@@ -47,13 +50,13 @@ def logged_menu(logged_user):
             print("Your balance is:" + str(logged_user.get_balance()) + '$')
 
         elif command == 'changepass':
-            new_pass = input("Enter your new password: ")
+            new_pass = getpass("Enter your new password: ")
             sql_manager.change_pass(new_pass, logged_user)
 
         elif command == 'change-message':
             new_message = input("Enter your new message: ")
             sql_manager.change_message(new_message, logged_user)
-        
+
         elif command == 'show-message':
             print(logged_user.get_message())
 
