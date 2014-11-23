@@ -22,7 +22,13 @@ class Cinema:
         self.session.add(Reservation(username=username, projection_id=projection_id, row=row, col=col))
         self.session.commit()
 
-    def fill_defaults(self):
+    def show_movies(self):
+        return self.session.query(Movie).all()
+
+    def show_movie_projections(self, movie_id):
+        return self.session.query(Projection).filter(Projection.movie_id == movie_id).all()
+
+    def __fill_defaults(self):
         self.add_movie('The Hunger Games: Catching Fire', 7.9)
         self.add_movie('Wreck-It Ralph', 7.8)
         self.add_movie('Her', 8.3)
@@ -42,4 +48,7 @@ class Cinema:
         self.add_reservation('Mysterious', 5, 2, 3)
         self.add_reservation('Mysterious', 5, 2, 4)
 
-Cinema().fill_defaults()
+
+c = Cinema()
+print(c.show_movies())
+print(c.show_movie_projections(1))
