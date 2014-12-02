@@ -37,7 +37,7 @@ class DatabaseManager:
             self.session.commit()
 
     def set_score(self, user, score):
-        self.session.query(User).filter(name=User.name).update(score=score)
+        self.session.query(User).filter(User.name == user).update({'score': score})
         self.session.commit()
 
     def get_question_count(self):

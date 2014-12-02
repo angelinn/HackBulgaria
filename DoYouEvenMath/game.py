@@ -16,6 +16,7 @@ class Game:
     def start(self):
         questions_length = self.manager.get_question_count()
         ques = None
+        score = 0
 
         while questions_length > 0:
             ques = self.manager.get_question(self.current_question)
@@ -27,6 +28,7 @@ class Game:
 
             if ques.answer == int(answer):
                 print('Correct!\n')
+                score += 1
             else:
                 print('Wrong!\n')
                 break
@@ -40,6 +42,8 @@ class Game:
                 print(questions_length)
 
             questions_length -= 1
+
+        self.manager.set_score(self.user, score)
 
 
 
