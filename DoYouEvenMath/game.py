@@ -1,10 +1,16 @@
 from user import User
 from question import Question
 from database_manager import DatabaseManager
+from ui import UI
 
 
 class Game:
     DEFAULT_QUESTION_SESSION = 10
+    __HELP_MESSAGE = '''
+    start - start the game
+    exit - quit the game
+    highscores - display highscores
+    help - display this message'''
 
     def __init__(self):
         self.manager = DatabaseManager()
@@ -16,21 +22,21 @@ class Game:
     def show_highscores(self):
         users = self.manager.get_highscores()
         for user in users:
-            print('{} - {}'.format(user.name, user.score))
+            return '{} - {}'.format(user.name, user.score)
 
     def add_more_questions(self):
-        print('Loading ..\n')
         for i in range(self.DEFAULT_QUESTION_SESSION):
             self.manager.add_random_question()
 
         self.question_count = self.manager.get_question_count()
 
     def prompt_user(self):
-        self.user = input('Enter Username: ')
+        self.user = UI.get_input('Enter Username: ')
         self.manager.add_user(self.user)
 
     def ask(self):
         self.prompt_user()
+        UI.display('Loading ..')
         self.add_more_questions()
 
         ques = None
@@ -40,19 +46,19 @@ class Game:
             ques = self.manager.get_question(self.current_question)
             self.current_question += 1
 
-            print(ques.question)
-
-            answer = input('Get answer: ')
+            UI.display(ques.question)
+            answer = UI.get_input('Answer: ')
 
             try:
                 if ques.answer == int(answer):
-                    print('Correct!\n')
+                    UI.display('Correct!\n')
                     score += 2
                 else:
-                    print('Wrong!\n')
+                    UI.display('Wrong!\n')
                     break
+
             except ValueError:
-                print('Please enter a valid answer.')
+                UI.display('Please enter a valid answer.')
                 self.current_question -= 1
                 continue
 
@@ -65,11 +71,13 @@ class Game:
 
     def start(self):
         while True:
-            command = input("> ")
+            command = UI.get_input("> ")
             if command == 'start':
                 self.ask()
             elif command == 'highscores':
-                self.show_highscores()
+                UI.display(self.show_highscores())
+            elif command == 'help':
+                UI.display(self.__HELP_MESSAGE)
             elif command == 'exit':
                 return
 
