@@ -1,11 +1,14 @@
 from functools import reduce
+from tools import Tools
 
 
 class GenerateTests:
     TEST_TEMPLATE = 'test_template.txt'
 
     def __init__(self, file_name):
-        self.test_file = file_name
+        self.test_name = file_name
+        self.output = self.load_template()
+        self.test_file = self.load_input()
 
     def load_template(self):
         template_file = open(self.TEST_TEMPLATE)
@@ -15,34 +18,45 @@ class GenerateTests:
         return output
 
     def load_input(self):
-        input_file = open(self.test_file, 'r')
+        input_file = open(self.test_name, 'r')
         content = input_file.read().split('\n')
         input_file.close()
 
         return content
 
-    def is_import(self, line):
-        if line[:6] == 'import' or line[:4] == 'from':
-            return True
+    def set_imports(self):
+        imports = reduce(Tools.concat, filter(Tools.is_import, self.test_file), '')
+        self.output = self.output.replace('{imports}', imports)
 
-        return False
+    def set_class_name(self):
+        self.output = self.output.replace('{class_name}', Tools.make_class_name(self.test_name))
 
-    def concat(self, one, other):
-        return one + other
+    def set_comments(self):
+        comment = list(filter(Tools.is_comment, self.test_file))
+        if len(comment) < 1:
+            return
 
-    def make_class_name(self):
-        without_extension = self.test_file[:-4]
+        self.output = self.output.replace('{comments}', comment[0])
 
+    def set_test_cases(self):
+        result = ''
+        cases = list(filter(Tools.is_test_case, self.test_file))
 
+        for i, case in enumerate(cases):
+            if case[0] != '"':
+                raise ValueError
+
+            result += Tools.TEST_CASE_BODY.format(i, Tools.build_case(case))
+
+        self.output = self.output.replace('{test_cases}', result)
 
     def go(self):
-        output = self.load_template()
-        test_file = self.load_input()
+        self.set_imports()
+        self.set_class_name()
+        self.set_comments()
+        self.set_test_cases()
 
-        res = reduce(self.concat, filter(self.is_import, test_file), '')
+        print(self.output)
 
-        output = output.replace('{imports}', res)
-        output = output.replace('{class_name}', self.test_file)
-        print(output)
-
-GenerateTests('is_prime_test.dsl').go()
+if __name__ == '__main__':
+    GenerateTests('is_prime_test.dsl').go()
