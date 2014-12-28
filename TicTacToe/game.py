@@ -21,8 +21,8 @@ class Game:
         self.game_over = False
 
     def input_choice(self):
-        x = int(input('x: '))
-        y = int(input('y: '))
+        x = int(self.UI.get_input('x: '))
+        y = int(self.UI.get_input('y: '))
 
         if self.are_x_y_valid(x, y) or self.UI.BOARD[x][y] != ' ':
             raise ValueError
@@ -79,10 +79,8 @@ class Game:
             sign = None
 
     def is_board_full(self):
-        for row in self.UI.BOARD:
-            for place in row:
-                if place == ' ':
-                    return False
+        if all(all(ch != ' ' for ch in line) for line in self.UI.BOARD) is False:
+            return False
 
         self.game_over = True
         return True
