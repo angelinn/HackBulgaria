@@ -1,5 +1,6 @@
 from functools import reduce
 from tools import Tools
+from file_format_exception import FileFormatException
 
 
 class GenerateTests:
@@ -44,19 +45,24 @@ class GenerateTests:
 
         for i, case in enumerate(cases):
             if case[0] != '"':
-                raise ValueError
+                raise FileFormatException
 
             result += Tools.TEST_CASE_BODY.format(i, Tools.build_case(case))
 
         self.output = self.output.replace('{test_cases}', result)
 
     def go(self):
-        self.set_imports()
-        self.set_class_name()
-        self.set_comments()
-        self.set_test_cases()
+        try:
+            self.set_imports()
+            self.set_class_name()
+            self.set_comments()
+            self.set_test_cases()
 
-        print(self.output)
+        except FileFormatException:
+            print('There was a problem with the .dsl file format.')
+
+        return self.output
 
 if __name__ == '__main__':
-    GenerateTests('is_prime_test.dsl').go()
+    data = GenerateTests('is_prime_test.dsl').go()
+    print(data)
