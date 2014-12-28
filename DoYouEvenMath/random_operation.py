@@ -10,20 +10,11 @@ class RandomOperation:
         self.result = result
 
     def get_random_sign(self):
-        signs = ['x', '+', '-', '/', '^']
+        signs = ['*', '+', '-', '/', '^']
         return signs[randint(0, 4)]
 
     def do_real_operation(self):
-        if self.sign == 'x':
-            self.result = self.a * self.b
-
-        elif self.sign == '+':
-            self.result = self.a + self.b
-
-        elif self.sign == '-':
-            self.result = self.a - self.b
-
-        elif self.sign == '^':
+        if self.sign == '^':
             if self.b > 5:
                 self.b = randint(0, 3)
 
@@ -41,3 +32,5 @@ class RandomOperation:
                     self.b = randint(0, 20)
 
                 self.result = int(self.a / self.b)
+        else:
+            self.result = eval('{} {} {}'.format(self.a, self.sign, self.b))
