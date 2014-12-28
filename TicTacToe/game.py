@@ -77,9 +77,6 @@ class Game:
     def is_board_full(self):
         return all(all(block != ' ' for block in line) for line in self.UI.BOARD)
 
-    def print_winner(self, sign):
-        self.UI.display('Winner is: {}'.format('Player' if sign == self.UI.X else 'Enemy'))
-
     def trigger_game_over(self, winner):
         self.game_over = True
         self.UI.print_map()
