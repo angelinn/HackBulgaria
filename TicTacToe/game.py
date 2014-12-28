@@ -3,6 +3,10 @@ from ui import UI
 
 
 class Game:
+    welcome_message = '\n{} {} {}\nWrite start to play or exit to quit!'.format(
+                      '-' * 10, 'Tic Tac Toe!', '-' * 10)
+
+    winner_message = 'Game Over! Winner is {}'
 
     winning_routes = [[(0, 0), (0, 1), (0, 2)],
                       [(0, 0), (1, 0), (2, 0)],
@@ -36,10 +40,6 @@ class Game:
         while self.game_over is False:
             self.UI.print_map()
 
-            if self.check_for_winner() is not None:
-                self.print_winner(self.check_for_winner())
-                break
-
             self.tick()
 
     def tick(self):
@@ -50,53 +50,47 @@ class Game:
             self.UI.display('\nInvalid input! Please reenter.\n')
             return
 
-        self.UI.BOARD[choice[0]][choice[1]] = 'X'
+        self.UI.BOARD[choice[0]][choice[1]] = self.UI.X
 
         if self.is_board_full():
-            self.UI.display("Game over! It's a draw!")
+            self.trigger_game_over(None)
             return
 
         self.AI.attack()
 
+        is_there_a_winner = self.check_for_winner()
+
+        if is_there_a_winner is not False:
+            self.trigger_game_over(is_there_a_winner)
+            return
+
     def check_for_winner(self):
-        sign = None
-        met = 0
-
         for route in self.winning_routes:
-            for item in route:
-                if sign is None and self.UI.BOARD[item[0]][item[1]] != ' ':
-                    sign = self.UI.BOARD[item[0]][item[1]]
-                    met += 1
-                    continue
+            if all(self.UI.BOARD[coords[0]][coords[1]] == self.UI.X for coords in route):
+                return self.UI.X
 
-                if self.UI.BOARD[item[0]][item[1]] == sign:
-                    met += 1
+            if all(self.UI.BOARD[coords[0]][coords[1]] == self.UI.O for coords in route):
+                return self.UI.O
 
-                if met == 3:
-                    return sign
-
-            met = 0
-            sign = None
+        return False
 
     def is_board_full(self):
-        if all(all(ch != ' ' for ch in line) for line in self.UI.BOARD) is False:
-            return False
-
-        self.game_over = True
-        return True
+        return all(all(block != ' ' for block in line) for line in self.UI.BOARD)
 
     def print_winner(self, sign):
-        self.UI.display('Winner is: {}'.format('Player' if sign == 'X' else 'Enemy'))
+        self.UI.display('Winner is: {}'.format('Player' if sign == self.UI.X else 'Enemy'))
+
+    def trigger_game_over(self, winner):
+        self.game_over = True
+        self.UI.print_map()
+        self.UI.display(self.winner_message.format('Player' if winner == self.UI.X else
+                                                   ('Enemy' if winner == self.UI.O else winner)))
 
     def go(self):
-        welcome_message = '\n{} {} {}\nWrite start to play or exit to quit!'.format(
-            '-' * 10, 'Tic Tac Toe!', '-' * 10)
+        self.UI.display(self.welcome_message)
 
-        self.UI.display(welcome_message)
-
-        while input('> ') == 'start':
+        if self.UI.get_input('> ') == 'start':
             self.start()
-            self.UI.display(welcome_message)
 
 if __name__ == '__main__':
     Game().go()
