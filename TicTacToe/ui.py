@@ -9,3 +9,6 @@ class UI:
             for cell in each:
                 print('[{}] '.format(cell), end='')
             print()
+
+    def display(self, message):
+        print(message)

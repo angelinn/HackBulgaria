@@ -47,13 +47,13 @@ class Game:
             choice = self.input_choice()
 
         except ValueError:
-            print('\nInvalid input! Please reenter.\n')
+            self.UI.display('\nInvalid input! Please reenter.\n')
             return
 
         self.UI.BOARD[choice[0]][choice[1]] = 'X'
 
         if self.is_board_full():
-            print("Game over! It's a draw!")
+            self.UI.display("Game over! It's a draw!")
             return
 
         self.AI.attack()
@@ -88,17 +88,17 @@ class Game:
         return True
 
     def print_winner(self, sign):
-        print('Winner is: {}'.format('Player' if sign == 'X' else 'Enemy'))
+        self.UI.display('Winner is: {}'.format('Player' if sign == 'X' else 'Enemy'))
 
     def go(self):
         welcome_message = '\n{} {} {}\nWrite start to play or exit to quit!'.format(
             '-' * 10, 'Tic Tac Toe!', '-' * 10)
 
-        print(welcome_message)
+        self.UI.display(welcome_message)
 
         while input('> ') == 'start':
             self.start()
-            print(welcome_message)
+            self.UI.display(welcome_message)
 
 if __name__ == '__main__':
     Game().go()
